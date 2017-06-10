@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace auth_googleoauth2\event;
+namespace auth_medusaoauth2\event;
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -49,7 +49,7 @@ class user_loggedin extends \core\event\base {
      * @return string
      */
     public static function get_name() {
-        return get_string('event_user_loggedin', 'auth_googleoauth2');
+        return get_string('event_user_loggedin', 'auth_medusaoauth2');
     }
 
     /**

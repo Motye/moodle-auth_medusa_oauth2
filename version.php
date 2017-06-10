@@ -25,9 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2017042701;
+$plugin->version  = 2016071004;
 $plugin->requires = 2014051200;   // Requires Moodle 2.7 or later.
-$plugin->release = '2.3.1 (Build: 2017042701)';
-$plugin->maturity = MATURITY_STABLE;             // This version's maturity level.
-$plugin->component = 'auth_googleoauth2'; // Declare the type and name of this plugin.
-
+$plugin->release = '0.1 (Build: 2016071004)';
+$plugin->maturity = MATURITY_BETA;             // This version's maturity level.
+$plugin->component = 'auth_medusaoauth2'; // Declare the type and name of this plugin.

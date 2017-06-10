@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Event observer for googleoauth2.
  */
-class auth_googleoauth2_observer {
+class auth_medusaoauth2_observer {
 
     /**
      * Triggered when '\core\event\user_loggedin' event is triggered.
@@ -36,12 +36,15 @@ class auth_googleoauth2_observer {
      */
     public static function userloggedin(\core\event\user_loggedin $event) {
         global $DB, $CFG;
+        error_log(print_r($event, true));
+        // $eventdata = $event->get_record_snapshot('user_loggedin', $event->objectid);
+        error_log(print_r($event->userid, true));
 
         $user = $DB->get_record('user', array('id' => $event->userid));
 
-        if ($user->auth != 'googleoauth2') {
+        if ($user->auth != 'medusaoauth2') {
             $loginrecord = array('userid' => $user->id, 'time' => time(), 'auth' => $user->auth);
-            $DB->insert_record('auth_googleoauth2_logins', $loginrecord);
+            $DB->insert_record('auth_medusaoauth2_logins', $loginrecord);
         }
     }
 

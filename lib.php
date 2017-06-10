@@ -17,19 +17,19 @@
 /**
  * This file contains lib functions for the Oauth2 authentication plugin.
  *
- * @package   auth_googleoauth2
+ * @package   auth_medusaoauth2
  * @copyright 2013 Jerome Mouneyrac {@link http://jerome.mouneyrac.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
+require_once($CFG->dirroot . '/auth/medusaoauth2/vendor/autoload.php');
 
-function googleoauth2_html_button($authurl, $providerdisplaystyle, $provider) {
-        return '<a class="signinprovider" href="' . $authurl . '" style="' . $providerdisplaystyle .'">
+function medusaoauth2_html_button($authurl, $providerdisplaystyle, $provider) {
+        return '<a class="singinprovider" href="' . $authurl . '" style="' . $providerdisplaystyle .'">
                   <div class="social-button ' . $provider->sskstyle . '">' .
-                    get_string('signinwithanaccount', 'auth_googleoauth2', $provider->readablename) .
+                    get_string('signinwithanaccount', 'auth_medusaoauth2', $provider->readablename) .
                  '</div>
                 </a>';
 }
@@ -40,7 +40,7 @@ function googleoauth2_html_button($authurl, $providerdisplaystyle, $provider) {
  * @return array
  */
 function provider_list() {
-    return array('google', 'facebook', 'battlenet', 'github', 'linkedin', 'messenger', 'microsoft', 'vk', 'dropbox');
+    return array('medusa');
 }
 
 /**
@@ -55,13 +55,13 @@ function oauth_add_to_log($courseid, $module, $action, $url='', $info='', $cm=0,
     }
 }
 
-function googleoauth2_provider_redirect($providername) {
+function medusaoauth2_provider_redirect($providername) {
     global $CFG;
 
     $code = optional_param('code', '', PARAM_TEXT); // Google can return an error.
 
     if (empty($code)) {
-        throw new moodle_exception($providername . '_failure', 'auth_googleoauth2');
+        throw new moodle_exception($providername . '_failure', 'auth_medusaoauth2');
     }
 
     $state = optional_param('state', null, PARAM_TEXT);
@@ -71,7 +71,7 @@ function googleoauth2_provider_redirect($providername) {
     // Ensure that this is no request forgery going on.
     // And that the user sending us this connect request is the user that was supposed to.
     if (empty($state) || ($_SESSION['oauth2state_' . $providername] !== $state)) {
-        throw new moodle_exception('invalidstateparam', 'auth_googleoauth2');
+        throw new moodle_exception('invalidstateparam', 'auth_medusaoauth2');
     }
 
     $loginurl = '/login/index.php';
@@ -87,7 +87,7 @@ function googleoauth2_provider_redirect($providername) {
  *
  * @return string the state token.
  */
-function auth_googleoauth2_get_state_token() {
+function auth_medusaoauth2_get_state_token() {
     // Create a state token to prevent request forgery.
     // Store it in the session for later validation.
     if (empty($_SESSION['STATETOKEN'])) {
@@ -102,10 +102,10 @@ function set_state_token($providername, $providerstate) {
 }
 
 /**
- * For backwards compatibility only: this echoes the html created in auth_googleoauth2_render_buttons
+ * For backwards compatibility only: this echoes the html created in auth_medusaoauth2_render_buttons
  */
-function auth_googleoauth2_display_buttons($echo = true) {
-    $html = auth_googleoauth2_render_buttons();
+function auth_medusaoauth2_display_buttons($echo = true) {
+    $html = auth_medusaoauth2_render_buttons();
     if ($echo) {
         echo $html;
     }
@@ -116,19 +116,19 @@ function auth_googleoauth2_display_buttons($echo = true) {
 /**
  * The very ugly code to render the html buttons.
  * TODO remove ugly html like center-tag and inline styles, implement a moodle renderer
- * @return string returns the html for buttons and some JavaScript
+ * @return string: returns the html for buttons and some JavaScript
  */
-function auth_googleoauth2_render_buttons() {
+function auth_medusaoauth2_render_buttons() {
     global $CFG;
     $html = '';
 
-    if (!is_enabled_auth('googleoauth2')) {
+    if (!is_enabled_auth('medusaoauth2')) {
         return $html;
     }
 
     // Get previous auth provider.
     $allauthproviders = optional_param('allauthproviders', false, PARAM_BOOL);
-    $cookiename = 'MOODLEGOOGLEOAUTH2_'.$CFG->sessioncookie;
+    $cookiename = 'MOODLEMEDUSAOAUTH2_'.$CFG->sessioncookie;
     $authprovider = '';
     if (!empty($_COOKIE[$cookiename])) {
         $authprovider = $_COOKIE[$cookiename];
@@ -142,7 +142,7 @@ function auth_googleoauth2_render_buttons() {
 
     foreach ($providers as $providername) {
 
-        require_once($CFG->dirroot . '/auth/googleoauth2/classes/provider/'.$providername.'.php');
+        require_once($CFG->dirroot . '/auth/medusaoauth2/classes/provider/'.$providername.'.php');
 
         // Load the provider plugin.
         $providerclassname = 'provideroauth2' . $providername;
@@ -160,12 +160,12 @@ function auth_googleoauth2_render_buttons() {
         $html .= $provider->html_button($authurl, $providerdisplaystyle);
     }
 
-    if (!$allauthproviders && !empty($authprovider) && $providerscount > 1) {
+    if (!$allauthproviders and !empty($authprovider) and $providerscount > 1) {
         $html .= '<br /><br />
            <div class="moreproviderlink">
                 <a href="'. $CFG->wwwroot . (!empty($CFG->alternateloginurl) ? $CFG->alternateloginurl : '/login/index.php')
-                     . '?allauthproviders=true' .'" onclick="changecss(\\\'signinprovider\\\',\\\'display\\\',\\\'inline-block\\\');">
-                    '. get_string('moreproviderlink', 'auth_googleoauth2').'
+                     . '?allauthproviders=true' .'" onclick="changecss(\\\'singinprovider\\\',\\\'display\\\',\\\'inline-block\\\');">
+                    '. get_string('moreproviderlink', 'auth_medusaoauth2').'
                 </a>
             </div>';
     }

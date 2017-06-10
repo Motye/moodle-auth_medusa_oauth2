@@ -15,9 +15,9 @@
 // along with it.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * googleoauth2 plugin event handler definition.
+ * medusaoauth2 plugin event handler definition.
  *
- * @package auth_googleoauth2
+ * @package auth_medusaoauth2
  * @category event
  * @copyright 2015 Jerome Mouneyrac
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,6 +28,6 @@ defined('MOODLE_INTERNAL') || die();
 $observers = array(
     array(
         'eventname' => '\core\event\user_loggedin',
-        'callback' => 'auth_googleoauth2_observer::userloggedin'
+        'callback' => 'auth_medusaoauth2_observer::userloggedin'
     ),
 );

@@ -17,7 +17,7 @@
 /**
  * Google Oauth2 authentication plugin upgrade code
  *
- * @package    auth_googleoauth2
+ * @package    auth_medusaoauth2
  * @copyright  2014 Jerome Mouneyrac
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,74 +26,57 @@
  * @param int $oldversion the version we are upgrading from
  * @return bool result
  */
-function xmldb_auth_googleoauth2_upgrade($oldversion) {
+function xmldb_auth_medusaoauth2_upgrade($oldversion) {
     global $DB;
 
     $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
 
     if ($oldversion < 2014060700) {
-        set_config('oauth2displaybuttons', 0, 'auth/googleoauth2');
-        upgrade_plugin_savepoint(true, 2014060700, 'auth', 'googleoauth2');
+        set_config('oauth2displaybuttons', 0, 'auth/medusaoauth2');
+        upgrade_plugin_savepoint(true, 2014060700, 'auth', 'medusaoauth2');
     }
 
     if ($oldversion < 2014120102) {
 
-        // Define table auth_googleoauth2_user_idps to be created.
-        $table = new xmldb_table('auth_googleoauth2_user_idps');
+        // Define table auth_medusaoauth2_user_idps to be created.
+        $table = new xmldb_table('auth_medusaoauth2_user_idps');
 
-        // Adding fields to table auth_googleoauth2_user_idps.
+        // Adding fields to table auth_medusaoauth2_user_idps.
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
         $table->add_field('provideruserid', XMLDB_TYPE_CHAR, '255', null, null, null, null);
         $table->add_field('provider', XMLDB_TYPE_CHAR, '255', null, null, null, null);
         $table->add_field('accesstoken', XMLDB_TYPE_CHAR, '255', null, null, null, null);
 
-        // Adding keys to table auth_googleoauth2_user_idps.
+        // Adding keys to table auth_medusaoauth2_user_idps.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
 
-        // Conditionally launch create table for auth_googleoauth2_user_idps.
+        // Conditionally launch create table for auth_medusaoauth2_user_idps.
         if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
         }
 
-        // Googleoauth2 savepoint reached.
-        upgrade_plugin_savepoint(true, 2014120102, 'auth', 'googleoauth2');
-    }
-
-    if ($oldversion < 2015051502) {
-
-        // Fix the vk plugin configs.
-        $vkappid = get_config('auth/googleoauth2', 'vkappid');
-        if (!empty($vkappid)) {
-            set_config('vkclientid', $vkappid, 'auth/googleoauth2');
-        }
-
-        $vkappsecret = get_config('auth/googleoauth2', 'vkappsecret');
-        if (!empty($vkappsecret)) {
-            set_config('vkclientsecret', $vkappsecret, 'auth/googleoauth2');
-        }
-
-        // Googleoauth2 savepoint reached.
-        upgrade_plugin_savepoint(true, 2015051502, 'auth', 'googleoauth2');
+        // medusaoauth2 savepoint reached.
+        upgrade_plugin_savepoint(true, 2014120102, 'auth', 'medusaoauth2');
     }
 
     if ($oldversion < 2015051503) {
 
-        // Changing type of field accesstoken on table auth_googleoauth2_user_idps to text.
-        $table = new xmldb_table('auth_googleoauth2_user_idps');
+        // Changing type of field accesstoken on table auth_medusaoauth2_user_idps to text.
+        $table = new xmldb_table('auth_medusaoauth2_user_idps');
         $field = new xmldb_field('accesstoken', XMLDB_TYPE_TEXT, null, null, null, null, null, 'provider');
 
         // Launch change of type for field accesstoken.
         $dbman->change_field_type($table, $field);
 
-        // Googleoauth2 savepoint reached.
-        upgrade_plugin_savepoint(true, 2015051503, 'auth', 'googleoauth2');
+        // medusaoauth2 savepoint reached.
+        upgrade_plugin_savepoint(true, 2015051503, 'auth', 'medusaoauth2');
     }
 
     if ($oldversion < 2015051504) {
 
-        // Define field refreshtoken to be added to auth_googleoauth2_user_idps.
-        $table = new xmldb_table('auth_googleoauth2_user_idps');
+        // Define field refreshtoken to be added to auth_medusaoauth2_user_idps.
+        $table = new xmldb_table('auth_medusaoauth2_user_idps');
         $field = new xmldb_field('refreshtoken', XMLDB_TYPE_TEXT, null, null, null, null, null, 'accesstoken');
 
         // Conditionally launch add field refreshtoken.
@@ -101,8 +84,8 @@ function xmldb_auth_googleoauth2_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-        // Define field expires to be added to auth_googleoauth2_user_idps.
-        $table = new xmldb_table('auth_googleoauth2_user_idps');
+        // Define field expires to be added to auth_medusaoauth2_user_idps.
+        $table = new xmldb_table('auth_medusaoauth2_user_idps');
         $field = new xmldb_field('expires', XMLDB_TYPE_CHAR, '100', null, null, null, null, 'refreshtoken');
 
         // Conditionally launch add field expires.
@@ -110,37 +93,37 @@ function xmldb_auth_googleoauth2_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-        // Googleoauth2 savepoint reached.
-        upgrade_plugin_savepoint(true, 2015051504, 'auth', 'googleoauth2');
+        // medusaoauth2 savepoint reached.
+        upgrade_plugin_savepoint(true, 2015051504, 'auth', 'medusaoauth2');
     }
 
       if ($oldversion < 2015090202) {
 
-        // Define table auth_googleoauth2_logins to be created.
-        $table = new xmldb_table('auth_googleoauth2_logins');
+        // Define table auth_medusaoauth2_logins to be created.
+        $table = new xmldb_table('auth_medusaoauth2_logins');
 
-        // Adding fields to table auth_googleoauth2_logins.
+        // Adding fields to table auth_medusaoauth2_logins.
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
         $table->add_field('time', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
         $table->add_field('auth', XMLDB_TYPE_CHAR, '250', null, null, null, null);
 
-        // Adding keys to table auth_googleoauth2_logins.
+        // Adding keys to table auth_medusaoauth2_logins.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
 
-        // Conditionally launch create table for auth_googleoauth2_logins.
+        // Conditionally launch create table for auth_medusaoauth2_logins.
         if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
         }
 
-        // Googleoauth2 savepoint reached.
-        upgrade_plugin_savepoint(true, 2015090202, 'auth', 'googleoauth2');
+        // medusaoauth2 savepoint reached.
+        upgrade_plugin_savepoint(true, 2015090202, 'auth', 'medusaoauth2');
     }
 
         if ($oldversion < 2015090203) {
 
-        // Define field subtype to be added to auth_googleoauth2_logins.
-        $table = new xmldb_table('auth_googleoauth2_logins');
+        // Define field subtype to be added to auth_medusaoauth2_logins.
+        $table = new xmldb_table('auth_medusaoauth2_logins');
         $field = new xmldb_field('subtype', XMLDB_TYPE_CHAR, '250', null, null, null, null, 'auth');
 
         // Conditionally launch add field subtype.
@@ -148,8 +131,8 @@ function xmldb_auth_googleoauth2_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-        // Googleoauth2 savepoint reached.
-        upgrade_plugin_savepoint(true, 2015090203, 'auth', 'googleoauth2');
+        // medusaoauth2 savepoint reached.
+        upgrade_plugin_savepoint(true, 2015090203, 'auth', 'medusaoauth2');
     }
 
     return true;

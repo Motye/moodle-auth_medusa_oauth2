@@ -14,15 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Oauth2 authentication plugin for Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once($CFG->dirroot . '/auth/googleoauth2/vendor/autoload.php');
+require_once( $CFG->dirroot . '/auth/medusaoauth2/vendor/autoload.php' );
 
-class provideroauth2battlenet extends \Depotwarehouse\OAuth2\Client\Provider\BattleNet {
+class provideroauth2medusa extends League\OAuth2\Client\Provider\Medusa
+{
 
     // THE VALUES YOU WANT TO CHANGE WHEN CREATING A NEW PROVIDER.
-    public $sskstyle = 'battlenet';
-    public $name = 'battlenet'; // It must be the same as the XXXXX in the class name provideroauth2XXXXX.
-    public $readablename = 'Battle.net';
-    public $scopes = array('sc2.profile');
+    public $sskstyle = 'medusa';
+    public $name = 'medusa'; // It must be the same as the XXXXX in the class name provideroauth2XXXXX.
+    public $readablename = 'MEDUSA';
+    public $scopes = array('profile', 'email');
 
     /**
      * Constructor.
@@ -30,16 +31,18 @@ class provideroauth2battlenet extends \Depotwarehouse\OAuth2\Client\Provider\Bat
      * @throws Exception
      * @throws dml_exception
      */
-    public function __construct() {
+    public function __construct()
+    {
         global $CFG;
 
-        parent::__construct([
-            'clientId'      => get_config('auth/googleoauth2', $this->name . 'clientid'),
-            'clientSecret'  => get_config('auth/googleoauth2', $this->name . 'clientsecret'),
-            'redirectUri'   => preg_replace('/http:/',
-                'https:', $CFG->httpswwwroot .'/auth/googleoauth2/' . $this->name . '_redirect.php', 1),
-            'scopes'        => $this->scopes
-        ]);
+        parent::__construct(
+            [
+                'clientId'     => get_config('auth/medusaoauth2', $this->name . 'clientid'),
+                'clientSecret' => get_config('auth/medusaoauth2', $this->name . 'clientsecret'),
+                'redirectUri'  => $CFG->wwwroot . '/auth/medusaoauth2/' . $this->name . '_redirect.php',
+                'scopes'       => $this->scopes
+            ]
+        );
     }
 
     /**
@@ -49,9 +52,10 @@ class provideroauth2battlenet extends \Depotwarehouse\OAuth2\Client\Provider\Bat
      * @throws Exception
      * @throws dml_exception
      */
-    public function isenabled() {
-        return (get_config('auth/googleoauth2', $this->name . 'clientid')
-            && get_config('auth/googleoauth2', $this->name . 'clientsecret'));
+    public function isenabled()
+    {
+        return ( get_config('auth/medusaoauth2', $this->name . 'clientid')
+            && get_config('auth/medusaoauth2', $this->name . 'clientsecret') );
     }
 
     /**
@@ -59,10 +63,12 @@ class provideroauth2battlenet extends \Depotwarehouse\OAuth2\Client\Provider\Bat
      *
      * @param $authurl
      * @param $providerdisplaystyle
+     *
      * @return string
      * @throws coding_exception
      */
-    public function html_button($authurl, $providerdisplaystyle) {
-        return googleoauth2_html_button($authurl, $providerdisplaystyle, $this);
+    public function html_button($authurl, $providerdisplaystyle)
+    {
+        return medusaoauth2_html_button($authurl, $providerdisplaystyle, $this);
     }
 }

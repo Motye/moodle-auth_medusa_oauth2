@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="auth/googleoauth2/db" VERSION="20151104" COMMENT="XMLDB file for Moodle auth/googleoauth2"
+<XMLDB PATH="auth/medusaoauth2/db" VERSION="20151104" COMMENT="XMLDB file for Moodle auth/medusaoauth2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="auth_googleoauth2_user_idps" COMMENT="user identity providers">
+    <TABLE NAME="auth_medusaoauth2_user_idps" COMMENT="user identity providers">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
@@ -18,7 +18,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="auth_googleoauth2_logins" COMMENT="Record all user logins">
+    <TABLE NAME="auth_medusaoauth2_logins" COMMENT="Record all user logins">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
